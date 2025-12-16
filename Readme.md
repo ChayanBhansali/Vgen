@@ -1,31 +1,40 @@
-brew install ffmpeg
-# Vgen 🎥🎙️
+# Vgen – Automated Text to Short‑Form Video Generator
 
-Vgen is an end‑to‑end **video generation pipeline** that automatically turns a text story into a fully produced short video with:
+Vgen is an end‑to‑end **text‑to‑video generation pipeline** that converts a plain text story into a production‑ready short video with narration, subtitles, and background visuals.
 
-* 🎧 AI‑generated narration (with natural gaps)
-* 🎬 Background video selection
-* ⏱️ Word‑level timestamps
-* 📝 Karaoke‑style animated subtitles (ASS)
-* 📦 Clean, reproducible output structure
-
-It is designed for **YouTube Shorts / Reels / Instagram videos**, with an emphasis on automation, speed, and production‑quality subtitles.
+It is built for creators and developers who want to **automatically generate YouTube Shorts, Instagram Reels, and vertical videos** with minimal manual effort.
 
 ---
 
-## ✨ Features
+## What Vgen Solves (SEO)
 
-* **Text → Video pipeline** in a single command
-* **TTS with pauses** for natural narration
-* **Automatic audio–video alignment**
-* **Word‑level timestamps** using Whisper
-* **High‑quality ASS subtitles** (highlighted active words)
-* **Random background video selection** from an input pool
-* **Fully scriptable & modular Python codebase**
+If you are searching for:
+
+* text to video generation in Python
+* automatic subtitles for short videos
+* karaoke style subtitles with word highlighting
+* Whisper word level timestamps
+* FFmpeg based video automation
+* AI narration + background video pipeline
+
+Vgen is designed specifically for these use cases.
 
 ---
 
-## 🗂️ Project Structure
+## Key Features
+
+* End‑to‑end **text → video pipeline**
+* AI‑generated narration with natural pauses
+* Automatic audio–video alignment using FFmpeg
+* Word‑level timestamps via OpenAI Whisper
+* High‑quality ASS (Advanced SubStation Alpha) subtitles
+* Karaoke‑style active word highlighting
+* Random background video selection
+* Modular, scriptable Python architecture
+
+---
+
+## Project Structure
 
 ```text
 Vgen/
@@ -66,43 +75,55 @@ Vgen/
 
 ---
 
-## ⚙️ Requirements
+## System Requirements
 
-### System
+* Python 3.9+
+* FFmpeg (required)
+* macOS / Linux (Windows supported with FFmpeg)
 
-* **Python 3.9+**
-* **FFmpeg** (required)
-* macOS / Linux (Windows works with FFmpeg installed)
+---
 
-Install FFmpeg:
+## Install FFmpeg (Required)
+
+FFmpeg must be installed **before** installing Python dependencies.
+
+### macOS
 
 ```bash
-# macOS
 brew install ffmpeg
+```
 
-# Ubuntu
+### Ubuntu / Debian
+
+```bash
 sudo apt install ffmpeg
+```
+
+Verify installation:
+
+```bash
+ffmpeg -version
 ```
 
 ---
 
-## 📦 Installation
+## Installation
 
-### 1️⃣ Clone the repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/yourusername/Vgen.git
 cd Vgen
 ```
 
-### 2️⃣ Create a virtual environment (recommended)
+### 2. Create a virtual environment (recommended)
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3️⃣ Install dependencies
+### 3. Install the package
 
 ```bash
 pip install -e . --no-build-isolation
@@ -110,24 +131,31 @@ pip install -e . --no-build-isolation
 
 ---
 
-## 🎬 Basic Usage
+## Quickstart
 
-### Background videos
-
-Place multiple `.mp4` videos inside:
+The fastest way to get started is via the provided example script.
 
 ```text
-input/
-  ├── video1.mp4
-  ├── video2.mp4
-  └── video3.mp4
+example/test.py
 ```
 
-Vgen will **randomly select one** for each story.
+Run:
+
+```bash
+python example/test.py
+```
+
+This will:
+
+1. Generate narration audio from text
+2. Pick a random background video
+3. Align audio and video
+4. Generate word‑level subtitles
+5. Render the final short video
 
 ---
 
-### Run the pipeline
+## Basic Python Usage
 
 ```python
 from vgen.pipeline import process_story
@@ -143,36 +171,55 @@ process_story(
 
 ---
 
-## 📁 Output Structure
+## Background Videos
+
+Place background videos inside:
+
+```text
+input/
+  ├── video1.mp4
+  ├── video2.mp4
+  └── video3.mp4
+```
+
+One video is randomly selected per story.
+
+---
+
+## Output Structure
 
 ```text
 output/story_001/
 │
 ├── audio/
-│   └── audio.wav            # generated narration
+│   └── audio.wav
 │
 ├── video/
-│   ├── temp.mp4             # intermediate video (auto‑deleted)
-│   └── video_with_captions.mp4  # FINAL OUTPUT 🎉
+│   ├── temp.mp4
+│   └── video_with_captions.mp4
 │
 ├── json/
-│   └── timestamps.json      # word‑level timestamps
+│   └── timestamps.json
 │
 └── ass/
-    └── captions.ass         # karaoke‑style subtitles
+    └── captions.ass
 ```
 
 ---
 
-## 📝 Subtitles (ASS)
+## Karaoke‑Style Subtitles (ASS)
 
-Vgen generates **high‑impact karaoke subtitles**:
+Vgen generates professional ASS subtitles with word‑by‑word highlighting.
 
-* Active word highlighted
-* Configurable words‑per‑caption (WPC)
-* Font, size, colors, margins configurable
+Configurable options include:
 
-Example settings:
+* Words per caption
+* Font and font size
+* Active and inactive word colors
+* Margins and borders
+* Uppercase rendering
+
+Example:
 
 ```python
 ass_text = build_ass(
@@ -191,16 +238,16 @@ ass_text = build_ass(
 
 ---
 
-## 🧠 Internals (Pipeline Flow)
+## Pipeline Flow
 
 ```text
 Story Text
    ↓
-TTS with gaps
+TTS with pauses
    ↓
 Random background video
    ↓
-Audio burned onto video (ffmpeg)
+Audio burned onto video (FFmpeg)
    ↓
 Whisper word timestamps
    ↓
@@ -211,7 +258,7 @@ Final video render
 
 ---
 
-## 🚀 CLI Usage (Optional)
+## CLI Usage (Optional)
 
 ```bash
 python -m vgen.video.compositor \
@@ -222,44 +269,44 @@ python -m vgen.video.compositor \
 
 ---
 
-## 🧪 Tips & Best Practices
+## Best Practices
 
-* Use **short background clips** (10–60s) for best Shorts performance
-* Vertical videos (9:16) work best
-* Avoid videos with loud original audio (it is replaced)
-* Keep stories under **60 seconds** for Shorts/Reels
+* Keep videos under 60 seconds for Shorts/Reels
+* Use vertical (9:16) background clips
+* Avoid clips with loud original audio
+* Use clean, high‑contrast footage for subtitles
 
 ---
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
-**FFmpeg not found**
+### FFmpeg Not Found
 
 ```text
 FileNotFoundError: [Errno 2] ffmpeg
 ```
 
-➡ Install FFmpeg and ensure it’s in your PATH
+Ensure FFmpeg is installed and available in your PATH.
 
 ---
 
-## 🔮 Roadmap
+## Roadmap
 
-* [ ] Vertical video auto‑crop (9:16)
-* [ ] Music bed mixing
-* [ ] Multiple subtitle styles
-* [ ] Batch story processing
-* [ ] Dockerized deployment
-
----
-
-## 📜 License
-
-MIT License. Feel free to use, modify, and distribute.
+* Vertical auto‑crop (9:16)
+* Background music mixing
+* Multiple subtitle themes
+* Batch story processing
+* Dockerized deployment
 
 ---
 
-## 🙌 Credits
+## License
+
+MIT License
+
+---
+
+## Credits
 
 * FFmpeg
 * OpenAI Whisper
@@ -267,4 +314,4 @@ MIT License. Feel free to use, modify, and distribute.
 
 ---
 
-**Vgen — automate your short‑form content creation.** 🚀
+Vgen – automate short‑form video creation with Python.
