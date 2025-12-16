@@ -6,7 +6,7 @@ import subprocess
 
 from pathlib import Path
 
-from vgen.configs.paths import INPUT_DIR, OUTPUT_DIR
+# from vgen.configs.paths import INPUT_DIR, OUTPUT_DIR
 from vgen.audio.tts import generate_audio_with_gaps
 from vgen.video.compositor import burn
 from vgen.captions.timestamps import prepare_json_words_with_timestamps
@@ -37,14 +37,14 @@ def process_story(story_id: str, story: str, output_dir: str, input_dir: str,art
 
     st = time.time()
 
-    audio_path = generate_audio_with_gaps(story, artist_gender, story_id)
+    audio_path = generate_audio_with_gaps(story, artist_gender, story_id , output_dir)
 
     temp_video = os.path.join(video_dir, "temp.mp4")
     burn(raw_video, audio_path, temp_video, verbose=True)
 
     json_file = os.path.join(json_dir, "timestamps.json")
     prepare_json_words_with_timestamps(
-        input_video_path=temp_video,
+        audio_path=audio_path,
         output_json_path=json_file,
         model_name="small",
         language="en",
@@ -73,17 +73,21 @@ def process_story(story_id: str, story: str, output_dir: str, input_dir: str,art
         f.write(ass_text)
 
     final_video = os.path.join(video_dir, "video_with_captions.mp4")
-    subprocess.run(
-        [
-            "ffmpeg", "-y",
-            "-i", temp_video,
-            "-vf", f"ass={ass_file}",
-            "-c:v", "libx264", "-crf", "18",
-            "-c:a", "copy",
-            final_video,
-        ],
-        check=True,
-    )
+    try:
+        subprocess.run(
+            [
+                "ffmpeg", "-y",
+                "-i", temp_video,
+                "-vf", f"ass={ass_file}",
+                "-c:v", "libx264", "-crf", "18",
+                "-c:a", "copy",
+                final_video,
+            ],
+            check=True,
+        )
+    finally:
+        if os.path.exists(temp_video):
+            os.remove(temp_video)
 
     return {
         "audio": audio_path,
@@ -93,3 +97,5 @@ def process_story(story_id: str, story: str, output_dir: str, input_dir: str,art
         "final_video": final_video,
         "time_taken": round(time.time() - st, 2),
     }
+
+# {'audio': './output/story1/audio/audio.wav', 'temp_video': './output/story1/video/temp.mp4', 'json': './output/story1/json/timestamps.json', 'ass': './output/story1/ass/captions.ass', 'final_video': './output/story1/video/video_with_captions.mp4', 'time_taken': 222.78}

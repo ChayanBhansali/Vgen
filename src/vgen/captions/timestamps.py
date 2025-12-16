@@ -1,14 +1,3 @@
-#!/usr/bin/env python3
-"""
-Extract audio from a video, transcribe with Whisper (per-word), and write
-temp/word_timestamps.json in your original schema.
-
-Usage examples:
-  python caption_generator.py
-  python caption_generator.py -i myvideo.mp4 -o temp/word_timestamps.json
-  python caption_generator.py -i input.mp4 -a tmp/audio.wav -o tmp/words.json -m small -l en --no-lowercase
-"""
-
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 
@@ -76,8 +65,7 @@ def save_word_timestamps_json(word_timestamps: List[Dict[str, Any]], output_path
         json.dump(word_timestamps, f, ensure_ascii=False, indent=4)
 
 def prepare_json_words_with_timestamps(
-    input_video_path: str = "input_video.mp4",
-    audio_path: str = "audio.wav",
+    audio_path: str ,
     output_json_path: str = "temp/word_timestamps.json",
     model_name: str = "small",
     language: Optional[str] = None,
@@ -90,12 +78,6 @@ def prepare_json_words_with_timestamps(
     3) Build the word_timestamps array
     4) Save to output_json_path
     """
-    try:
-        extract_audio(input_video_path, audio_path)
-        print("Audio extracted successfully!")
-    except Exception as e:
-        print(f"Error extracting audio: {e}")
-        return
 
     captions_data = transcribe_audio_to_segments(audio_path, model_name=model_name, language=language)
     word_timestamps = build_word_timestamps(captions_data, lowercase=lowercase, init_start=init_start_ts)
@@ -104,38 +86,3 @@ def prepare_json_words_with_timestamps(
     print(f"Extracted captions saved to {output_json_path}")
 
 
-def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Generate per-word timestamps JSON from a video using Whisper.")
-    p.add_argument("-i", "--input-video", default="input_video.mp4", help="Path to input video file.")
-    p.add_argument("-a", "--audio-out", default="audio.wav", help="Temporary/output audio WAV path.")
-    p.add_argument("-o", "--output-json", default="temp/word_timestamps.json", help="Output JSON path.")
-    p.add_argument("-m", "--model", default="small", help="Whisper model size (tiny/base/small/medium/large...).")
-    p.add_argument("-l", "--language", default="en", help="Language code (e.g., en). Omit to auto-detect.")
-    p.add_argument("--no-lowercase", action="store_true", help="Keep original word casing (default lowercases).")
-    p.add_argument("-s", "--init-start", default=0.0, help="Set initial start time, 0.0 otherwise")
-    return p.parse_args()
-
-
-def main() -> int:
-    args = parse_args()
-    try:
-        prepare_json_words_with_timestamps(
-            input_video_path=args.input_video,
-            audio_path=args.audio_out,
-            output_json_path=args.output_json,
-            model_name=args.model,
-            language=args.language,
-            lowercase=not args.no_lowercase,
-            init_start_ts=args.init_start
-        )
-        return 0
-    except KeyboardInterrupt:
-        print("Aborted.")
-        return 130
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        return 1
-
-
-if __name__ == "__main__":
-    sys.exit(main())

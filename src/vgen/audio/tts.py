@@ -63,4 +63,4 @@ def generate_audio_with_gaps(text:str, gender:str , story_id , output_dir:str) -
 if __name__ == "__main__":
     import fire 
     fire.Fire(generate_audio_with_gaps)
-    # python gen_audio.py --text "hi my name is alex and i like to play badminton a lot, i like to draw sometimes , i find joy everywher" --gender male  --story_id "1"
+    # python gen_audio.py --text "hi my name is alex and i like to play badminton a lot, i like to draw sometimes , i find joy everywhere" --gender male  --story_id "1"

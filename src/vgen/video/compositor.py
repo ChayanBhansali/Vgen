@@ -124,8 +124,7 @@ def main():
     """Main entry point with dependency check"""
     # if not check_dependencies():
     #     sys.exit(1)
-    # python gen_video.py /Users/chayanbhansali/Documents/cb/input/videoplayback.mp4 /Users/chayanbhansali/Documents/cb/Vgen/output/audio/1756497675.2909172.wav  /Users/chayanbhansali/Documents/cb/Vgen/output/video/temp-video.mp4
-    
+    # python -m vgen.video.compositor --video_path ./input/video1.mp4 --audio_path ./output/1/audio/audio.wav --output_path ./output/1/final-video.mp4
     fire.Fire(burn)
 
 
