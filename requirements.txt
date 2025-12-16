@@ -1,0 +1,8 @@
+numpy
+torch
+ffmpeg-python
+openai-whisper
+pydub
+tqdm
+kokoro>=0.9.4
+soundfile
