@@ -6,31 +6,15 @@ It is built for creators and developers who want to **automatically generate You
 
 ---
 
-## What Vgen Solves (SEO)
-
-If you are searching for:
-
-* text to video generation in Python
-* automatic subtitles for short videos
-* karaoke style subtitles with word highlighting
-* Whisper word level timestamps
-* FFmpeg based video automation
-* AI narration + background video pipeline
-
-Vgen is designed specifically for these use cases.
-
----
-
 ## Key Features
 
 * End‑to‑end **text → video pipeline**
-* AI‑generated narration with natural pauses
+* AI‑generated narration using Kokoro tts
 * Automatic audio–video alignment using FFmpeg
 * Word‑level timestamps via OpenAI Whisper
 * High‑quality ASS (Advanced SubStation Alpha) subtitles
 * Karaoke‑style active word highlighting
 * Random background video selection
-* Modular, scriptable Python architecture
 
 ---
 
@@ -119,8 +103,8 @@ cd Vgen
 ### 2. Create a virtual environment (recommended)
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
+conda create -n vgen python=3.10 -y
+conda activate vgen
 ```
 
 ### 3. Install the package
@@ -238,68 +222,6 @@ ass_text = build_ass(
 
 ---
 
-## Pipeline Flow
-
-```text
-Story Text
-   ↓
-TTS with pauses
-   ↓
-Random background video
-   ↓
-Audio burned onto video (FFmpeg)
-   ↓
-Whisper word timestamps
-   ↓
-ASS subtitle generation
-   ↓
-Final video render
-```
-
----
-
-## CLI Usage (Optional)
-
-```bash
-python -m vgen.video.compositor \
-  --video_path input/video1.mp4 \
-  --audio_path output/story_001/audio/audio.wav \
-  --output_path output/story_001/
-```
-
----
-
-## Best Practices
-
-* Keep videos under 60 seconds for Shorts/Reels
-* Use vertical (9:16) background clips
-* Avoid clips with loud original audio
-* Use clean, high‑contrast footage for subtitles
-
----
-
-## Troubleshooting
-
-### FFmpeg Not Found
-
-```text
-FileNotFoundError: [Errno 2] ffmpeg
-```
-
-Ensure FFmpeg is installed and available in your PATH.
-
----
-
-## Roadmap
-
-* Vertical auto‑crop (9:16)
-* Background music mixing
-* Multiple subtitle themes
-* Batch story processing
-* Dockerized deployment
-
----
-
 ## License
 
 MIT License
@@ -308,10 +230,9 @@ MIT License
 
 ## Credits
 
-* FFmpeg
+*This project was inspired by [auto-captions](https://github.com/your-org/auto-captions).
 * OpenAI Whisper
-* Montserrat Font
+* kokoro tts
+  
 
----
 
-Vgen – automate short‑form video creation with Python.
