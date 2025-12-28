@@ -230,7 +230,7 @@ MIT License
 
 ## Credits
 
-*This project was inspired by [auto-captions](https://github.com/your-org/auto-captions).
+*This project was inspired by [auto-captions](https://github.com/nikhil-reddy05/auto-captions).
 * OpenAI Whisper
 * kokoro tts
   
